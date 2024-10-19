@@ -1,0 +1,7 @@
+Se consulta el número de la segurirdad social 67890123456
+Se consulta el número de la segurirdad social 01234567890
+No existe ningun paciente en la base de datos con el siguiente fdgegetrge
+Se consulta el número de la segurirdad social 45678901210
+No existe ningun paciente en la base de datos con el siguiente 678901234509
+Se consulta el número de la segurirdad social 01234567890
+No existe ningun paciente en la base de datos con el siguiente 456789012193489f

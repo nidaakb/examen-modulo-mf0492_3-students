@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Patient = require('./models/patient');
+const { logRequest } = require('./utils/utils');
 
 const app = express();
 
@@ -26,7 +27,8 @@ app.get('/', async (req, res) => {
 // Endpoint 1: Obtener todos los pacientes en formato JSON en la ruta /api/patients
 app.get('/api/patients', async (req, res) => {
     try {
-        const patients = [];
+        const patients = await Patient.find();
+        console.log(patients)
         res.json({
             message: "Query executed successfully",
             results: patients
@@ -43,17 +45,27 @@ app.get('/form', (req, res) => {
 
 // Endpoint 3: Verificar si el paciente existe y mostrar información
 app.get('/check', async (req, res) => {
-    
+
+    const ssn = req.query.ssn;
+    console.log('Numero SS:', ssn);
+    if(!ssn){
+        logRequest(`Consulta faillda sobre el ssn proporcionado ${ssn}`)
+        return res.status(400).send('Numero SS no valido!')
+    }
+
     try {
-        const patient = await Patient.findOne();
+        const patient = await Patient.findOne({ ssn: ssn });
         console.log("🚀 ~ file: app.js:52 ~ app.get ~ patient:", patient)
 
         if (patient) {
+            logRequest(`Se consulta el número de la segurirdad social ${ssn}`)
             res.render('patient-info', { patient });
         } else {
+            logRequest(`No existe ningun paciente en la base de datos con el siguiente ${ssn}`)
             res.render('patient-info', { patient: null, message: 'El paciente no existe en la base de datos' });
         }
     } catch (err) {
+        logRequest(`Error de consulta para el númerpo ${ssn}: Error: ${err.message} `)
         res.status(500).send('Error al verificar el paciente');
     }
 });
